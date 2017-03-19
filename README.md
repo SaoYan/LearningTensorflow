@@ -13,9 +13,9 @@ This demo helps to understand basic concepts including graph, Session, placehold
 This is my first toy experiment. In this demo I build a linear regression model.     
 The key is to help understand the framework of training a model.      
 1) Define tensor objects.    
-1) optimizable model parameters: defined as Variable    
-2) fixed model parameters: defined as constant    
-3) model inputs: defined as placeholder (to be FEEDed by training or test datas)    
+optimizable model parameters: defined as Variable    
+fixed model parameters: defined as constant    
+model inputs: defined as placeholder (to be FEEDed by training or test datas)    
 2) Define optimization object    
 This can be MSE (e.g. linear regression, this demo), cross entropy loss (e.g. logistic regression, softmax regression), and othe possible ones.    
 3) Pick an optimizer    
@@ -69,4 +69,5 @@ Starting TensorBoard 39 on port 6006
 
 Now you may want to see the details of the demo. Here is the overview:    
 Generally speaking, I send three types of information to Tensorboard    
-1) 
+1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution. See 'fig1.png' & 'fig2.png' to see what it's like.
+2) Embeddings. For example, we can use tensorboard to visualize the feature space or data space. See 'fig2.png' to see what it's like.
