@@ -159,8 +159,11 @@ for iter in range(max_iter):
 			summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
 			test_writer.add_summary(summary_test, iter)
 			test_writer.flush()
+	else:
+		train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
+		
 	# each 1000 steps: operations for embeddings
-	elif iter%1000 == 0:
+	if iter%1000 == 0:
 		# save checkpoint file
 		checkpoint_file = os.path.join('./MNIST_logs/embedding', 'model.ckpt')
 		saver.save(sess, checkpoint_file, global_step=iter)
@@ -170,10 +173,7 @@ for iter in range(max_iter):
 		embedding.tensor_name = test_images.name
 		embedding.metadata_path = os.path.join('./MNIST_logs/embedding', 'metadata.tsv') # Link this tensor to its metadata file
 		projector.visualize_embeddings(embedding_writer, config) # Saves a configuration file that TensorBoard will read during startup
-
-		train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
-	else:
-		train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
+	
 
 train_writer.close()
 test_writer.close()
