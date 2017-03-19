@@ -1,5 +1,5 @@
 # LearningTensorflow        
-Get started with Tensorflow!
+This is how I get started with Tensorflow!
 ===
  
 Folder 'Get Started' includes:
