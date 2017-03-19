@@ -72,7 +72,7 @@ Generally speaking, I send four types of information to Tensorboard
 1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution. See 'fig1.png' & 'fig2.png'.    
 2) Images. We can resize the MNIST data to proper size and visualize them. See 'fig3.png'.
 3) Embeddings. For example, we can use tensorboard to visualize the feature space or data space. See 'fig4.png'.
-4) Program running information, including memory useage, computing time, etc. See 'fig5.png'.
+4) Program running information, including memory useage, computing time, etc. See 'fig5.png'.    
 exp7 only includes training information and images.    
 exp8 steps one more step and adds embeddings.    
 exp9 adds program running information, this is the most complete version!
