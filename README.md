@@ -12,15 +12,15 @@ This demo helps to understand basic concepts including graph, Session, placehold
 ### ------exp2_simple_linear_model.py    
 This is my first toy experiment. In this demo I build a linear regression model.     
 The key is to help understand the framework of training a model.      
-(1) Define tensor objects.    
+1) Define tensor objects.    
 optimizable model parameters --- defined as Variable    
 fixed model parameters       --- defined as constant    
 model inputs                 --- defined as placeholder (to be FEEDed by training or test datas)    
-(2) Define optimization object    
+2) Define optimization object    
 This can be MSE (e.g. linear regression, this demo), cross entropy loss (e.g. logistic regression, softmax regression), and othe possible ones.    
-(3) Pick an optimizer    
+3) Pick an optimizer    
 This can be gradient descent, momentum, Adam, and so on. This demo is so simple that GradientDescentOptimizer is enough.    
-(4) Run optimization    
+4) Run optimization    
 In step (1)~(3), we actually build a Computational Graph, which is no more than a model before we RUN it with Session    
 In the final step, use Session to run the optimizer (the one defined in step 3).    
 Remember to FEED each placeholder when running the graph!
@@ -57,3 +57,18 @@ For more detail, see
 https://www.tensorflow.org/get_started/input_fn
 
 ### ------exp7_TensorBoard.py
+### ------exp8_Embedding_Visualization.py
+### ------exp9_Graph_Visualization.py
+These three demos are all about Tensorboard.    
+
+First, you can try Tensorboard and see how amazing it is.       
+1) Just run exp9, you will see a folder named 'MNIST_logs' in your current path.    
+2) Open command line. Run command 'tensorboard --logdir=logpath', where 'logpath' is the path of 'MNIST_logs'.    
+3) You will see the following content (the specific port number may not be the same):    
+Starting TensorBoard 39 on port 6006    
+(You can navigate to http://127.0.1.1:6006)    
+4) Open your browser, go to the address http://127.0.1.1:6006 (the address you get from command line)
+
+Now you may want to see the details of the demo. Here is the overview:    
+Generally speaking, I send three types of information to Tensorboard    
+1) 
