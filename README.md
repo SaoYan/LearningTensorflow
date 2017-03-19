@@ -1,13 +1,15 @@
-# LearningTensorflow
+# LearningTensorflow    
+=================================== 
 Get started with Tensorflow!
 
+-----------------------------------    
 Folder 'Get Started' includes:
 
-------exp1_basic_usage.py:     
+### ------exp1_basic_usage.py:     
 Just trying basic useage of tensorflow.     
 This demo helps to understand basic concepts including graph, Session, placeholder, constant and Variable.
 
-------exp2_simple_linear_model.py    
+### ------exp2_simple_linear_model.py    
 This is my first toy experiment. In this demo I build a linear regression model.     
 The key is to help understand the framework of training a model.      
 (1) Define tensor objects.    
@@ -23,7 +25,7 @@ In step (1)~(3), we actually build a Computational Graph, which is no more than 
 In the final step, use Session to run the optimizer (the one defined in step 3).    
 Remember to FEED each placeholder when running the graph!
 
-------exp3_SoftmaxRegression_mnist.py    
+### ------exp3_SoftmaxRegression_mnist.py    
 Time to try something more interesting!    
 In this demo, I build a sofmax regression model for the MNIST dataset.    
 --no hiden layer    
@@ -33,7 +35,7 @@ In this demo, I build a sofmax regression model for the MNIST dataset.
 --maximum iteration 1000    
 --no regularization, no dropout
 
-------exp4_CNN_mnist.py    
+### ------exp4_CNN_mnist.py    
 Of course the CNN model cannot be missed!    
 In this demo I build a CNN model for MNIST dataset.    
 --hidden: 2 convolution layers, each of which followed by one max-pooling layer    
