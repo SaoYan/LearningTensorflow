@@ -57,7 +57,7 @@ For more detail, see
 https://www.tensorflow.org/get_started/input_fn
 
 ### exp7_TensorBoard.py  exp8_Embedding_Visualization.py  exp9_Graph_Visualization.py
-These three demos are all about Tensorboard.    
+These three demos are all about Tensorboard. All of them are a modification of exp4. (The model is exactly the same, I just add some extra codes for visualizing on Tensorboard.)
 
 First, you can try Tensorboard and see how amazing it is.       
 1) Just run exp9, you will see a folder named 'MNIST_logs' in your current path.    
@@ -68,6 +68,11 @@ Starting TensorBoard 39 on port 6006
 4) Open your browser, go to the address http://127.0.1.1:6006 (the address you get from command line)
 
 Now you may want to see the details of the demo. Here is the overview:    
-Generally speaking, I send three types of information to Tensorboard    
-1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution. See 'fig1.png' & 'fig2.png' to see what it's like.
-2) Embeddings. For example, we can use tensorboard to visualize the feature space or data space. See 'fig2.png' to see what it's like.
+Generally speaking, I send four types of information to Tensorboard    
+1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution. See 'fig1.png' & 'fig2.png'.    
+2) Images. We can resize the MNIST data to proper size and visualize them. See 'fig3.png'.
+3) Embeddings. For example, we can use tensorboard to visualize the feature space or data space. See 'fig4.png'.
+4) Program running information, including memory useage, computing time, etc. See 'fig5.png'.
+exp7 only includes training information and images.    
+exp8 steps one more step and adds embeddings.    
+exp9 adds program running information, this is the most complete version!
