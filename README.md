@@ -1,9 +1,9 @@
-# LearningTensorflow    
-===================================     
+# LearningTensorflow        
 Get started with Tensorflow!
-
------------------------------------    
+===
+ 
 Folder 'Get Started' includes:
+---
 
 ### ------exp1_basic_usage.py:     
 Just trying basic useage of tensorflow.     
