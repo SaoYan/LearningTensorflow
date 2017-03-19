@@ -4,7 +4,7 @@ Get started with Tensorflow!
 Folder 'Get Started' includes:
 
 ------exp1_basic_usage.py:     
-Just trying basic useage of tensorflow. 
+Just trying basic useage of tensorflow.     
 This demo helps to understand basic concepts including graph, Session, placeholder, constant and Variable.
 
 ------exp2_simple_linear_model.py    
@@ -27,21 +27,21 @@ Remember to FEED each placeholder when running the graph!
 Time to try something more interesting!    
 In this demo, I build a sofmax regression model for the MNIST dataset.    
 --no hiden layer    
---cost function: cross entropy loss
---momentum optimizer, learning rate 0.1, momentum 0.9
---batch size 100
---maximum iteration 1000
+--cost function: cross entropy loss    
+--momentum optimizer, learning rate 0.1, momentum 0.9    
+--batch size 100    
+--maximum iteration 1000    
 --no regularization, no dropout
 
-------exp4_CNN_mnist.py
-Of course the CNN model cannot be missed!
-In this demo I build a CNN model for MNIST dataset.
---hidden: 2 convolution layers, each of which followed by one max-pooling layer
---output: one fully connected layer (with dropout)
---cost function: cross entropy loss
---Adam optimizer, learning rate 1e-4
---batch size 100
---maximum iteration 20000
+------exp4_CNN_mnist.py    
+Of course the CNN model cannot be missed!    
+In this demo I build a CNN model for MNIST dataset.    
+--hidden: 2 convolution layers, each of which followed by one max-pooling layer    
+--output: one fully connected layer (with dropout)    
+--cost function: cross entropy loss    
+--Adam optimizer, learning rate 1e-4    
+--batch size 100    
+--maximum iteration 20000    
 --using dropout, dropout probability 0.5 (remember using dropout just in training process, no dropout when testing!)
 
 (To be continued/////2017/3/19)
