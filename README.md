@@ -51,7 +51,7 @@ This is a demo for use of Tensorflow high level API tf.contrib.
 For simplicity, use the IRIS dataset and a simple 3-layer feed forward network.
 
 ### ------exp6_Customer_InputFun.py
-It is often the case that we need to pre-processing the dataset. Customize our own input_function is a good choice.
+It is often the case that we need to pre-processing the dataset. Customizing our own input_function is a good choice.     
 In this demo, I define a simple input_function. We then provide the function handle when run the graph.     
 For more detail, see   
 https://www.tensorflow.org/get_started/input_fn
