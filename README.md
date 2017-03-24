@@ -69,7 +69,9 @@ Starting TensorBoard 39 on port 6006
 
 Now you may want to see the details of the demo. Here is the overview:    
 Generally speaking, I send four types of information to Tensorboard    
-1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution. See 'fig1.png' & 'fig2.png'.    
+1) Training information. For example, record loss value to plot a trainging curve, or record weight values to plot a histogram for visualizing their distribution.
+![fig1.png](https://github.com/SaoYan/LearningTensorflow/blob/master/Get%20Started/see%20me/fig1.png)
+![fig2.png](https://github.com/SaoYan/LearningTensorflow/blob/master/Get%20Started/see%20me/fig2.png)
 2) Images. We can resize the MNIST data to proper size and visualize them. See 'fig3.png'.
 3) Embeddings. For example, we can use tensorboard to visualize the feature space or data space. See 'fig4.png'.
 4) Program running information, including memory useage, computing time, etc. See 'fig5.png'.    
