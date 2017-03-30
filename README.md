@@ -56,7 +56,9 @@ In this demo, I define a simple input_function. We then provide the function han
 For more detail, see   
 https://www.tensorflow.org/get_started/input_fn
 
-### exp7_TensorBoard.py  exp8_Embedding_Visualization.py  exp9_Graph_Visualization.py
+### exp7_TensorBoard.py  
+### exp8_Embedding_Visualization.py  
+### exp9_Graph_Visualization.py
 These three demos are all about Tensorboard. All of them are a modification of exp4. (The model is exactly the same, I just add some extra codes for visualizing on Tensorboard.)
 
 First, you can try Tensorboard and see how amazing it is.       
