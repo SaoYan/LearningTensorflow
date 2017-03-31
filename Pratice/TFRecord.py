@@ -121,14 +121,15 @@ if __name__ == '__main__':
     batch_size = 3
     img, label = read_tfrecord(output_directory+'/'+output_name+'.tfrecords')
     img_batch, label_batch = tf.train.shuffle_batch([img, label],
-                            batch_size=batch_size, capacity=2000, min_after_dequeue=1000)
+                            batch_size=batch_size,
+                            capacity=1000 + 3 * batch_size, min_after_dequeue=1000)
     init = tf.initialize_all_variables()
     maxiter = 3
     with tf.Session() as sess:
         sess.run(init)
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         for i in range(maxiter):
-            coord = tf.train.Coordinator()
-            threads = tf.train.start_queue_runners(sess=sess, coord=coord)
             data_x, data_y = sess.run([img_batch, label_batch])
             # training code here! feed with data_x, data_y!
             print len(data_x)
