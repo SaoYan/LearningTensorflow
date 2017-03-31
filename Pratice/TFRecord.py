@@ -79,8 +79,6 @@ def disp_tfrecords(tfrecord_list_file):
     depth = features['depth']
     label = tf.cast(features['label'], tf.int32)
     init_op = tf.initialize_all_variables()
-    resultImg=[]
-    resultLabel=[]
 
     with tf.Session() as sess:
         sess.run(init_op)
@@ -89,8 +87,6 @@ def disp_tfrecords(tfrecord_list_file):
         for i in range(1):
             image_eval = image.eval()
             image_eval_reshape = image_eval.reshape([height.eval(), width.eval(), depth.eval()])
-            resultLabel.append(label.eval())
-            resultImg.append(image_eval_reshape)
             cv2.imwrite(str(i) + '.jpg', image_eval_reshape)
     coord.request_stop()
     coord.join(threads)
@@ -117,20 +113,24 @@ def read_tfrecord(filename_queuetemp):
     label = tf.cast(features['label'], tf.int32)
     return image, label
 
+if __name__ == '__main__':
+    transform2tfrecord(filedir, output_name , output_directory,  resize_height, resize_width)
+    #disp_tfrecords(output_directory+'/'+output_name+'.tfrecords')
 
-transform2tfrecord(filedir, output_name , output_directory,  resize_height, resize_width)
-#disp_tfrecords(output_directory+'/'+output_name+'.tfrecords')
-
-# training code
-batch_size = 1
-img, label = read_tfrecord(output_directory+'/'+output_name+'.tfrecords')
-img_batch, label_batch = tf.train.shuffle_batch([img, label],
-                        batch_size=batch_size, capacity=2000, min_after_dequeue=1000)
-init = tf.initialize_all_variables()
-maxiter = 10
-with tf.Session() as sess:
-    sess.run(init)
-    #for i in range(maxiter):
-    data_x, data_y = sess.run([img, label])
-    # training code here! feed with data_x, data_y!
-    print type(data_x)
+    # training code
+    batch_size = 3
+    img, label = read_tfrecord(output_directory+'/'+output_name+'.tfrecords')
+    img_batch, label_batch = tf.train.shuffle_batch([img, label],
+                            batch_size=batch_size, capacity=2000, min_after_dequeue=1000)
+    init = tf.initialize_all_variables()
+    maxiter = 3
+    with tf.Session() as sess:
+        sess.run(init)
+        for i in range(maxiter):
+            coord = tf.train.Coordinator()
+            threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+            data_x, data_y = sess.run([img_batch, label_batch])
+            # training code here! feed with data_x, data_y!
+            print len(data_x)
+    coord.request_stop()
+    coord.join(threads)
