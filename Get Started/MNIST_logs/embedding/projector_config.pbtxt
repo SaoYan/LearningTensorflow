@@ -1,0 +1,4 @@
+embeddings {
+  tensor_name: "test_images:0"
+  metadata_path: "./MNIST_logs/embedding/metadata.tsv"
+}

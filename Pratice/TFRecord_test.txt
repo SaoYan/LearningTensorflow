@@ -1,0 +1,3 @@
+TFRecord_test1.jpg 1
+TFRecord_test2.jpg 2
+TFRecord_test3.jpg 3
