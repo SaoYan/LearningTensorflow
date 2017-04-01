@@ -91,7 +91,7 @@ def disp_tfrecords(tfrecord_list_file):
     coord.request_stop()
     coord.join(threads)
 
-def read_tfrecord(filename_queuetemp):
+def read_tfrecord(filename_queuetemp, batch_size):
     filename_queue = tf.train.string_input_producer([filename_queuetemp])
     reader = tf.TFRecordReader()
     _, serialized_example = reader.read(filename_queue)
@@ -111,20 +111,26 @@ def read_tfrecord(filename_queuetemp):
     image = tf.cast(image, tf.float32) * (1. /255) - 0.5
     # label
     label = tf.cast(features['label'], tf.int32)
-    return image, label
+    # shuffle batch
+    if batch_size > 0:
+        img_batch, label_batch = tf.train.shuffle_batch([image, label],
+                batch_size=batch_size,
+                capacity=1000 + 3 * batch_size,
+                num_threads = 2,
+                min_after_dequeue=1000)
+    return img_batch, label_batch
 
 if __name__ == '__main__':
     transform2tfrecord(filedir, output_name , output_directory,  resize_height, resize_width)
     #disp_tfrecords(output_directory+'/'+output_name+'.tfrecords')
 
     # training code
-    batch_size = 3
-    img, label = read_tfrecord(output_directory+'/'+output_name+'.tfrecords')
-    img_batch, label_batch = tf.train.shuffle_batch([img, label],
-                            batch_size=batch_size,
-                            capacity=1000 + 3 * batch_size, min_after_dequeue=1000)
-    init = tf.initialize_all_variables()
+    batch_size = 100
     maxiter = 3
+    filename = output_directory+'/'+output_name+'.tfrecords'
+    img_batch, label_batch = read_tfrecord(filename, batch_size=batch_size)
+
+    init = tf.initialize_all_variables()
     with tf.Session() as sess:
         sess.run(init)
         coord = tf.train.Coordinator()
@@ -133,5 +139,5 @@ if __name__ == '__main__':
             data_x, data_y = sess.run([img_batch, label_batch])
             # training code here! feed with data_x, data_y!
             print len(data_x)
-    coord.request_stop()
-    coord.join(threads)
+        coord.request_stop()
+        coord.join(threads)
