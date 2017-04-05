@@ -161,7 +161,7 @@ for iter in range(max_iter):
 			test_writer.flush()
 	else:
 		train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
-		
+
 	# each 1000 steps: operations for embeddings
 	if iter%1000 == 0:
 		# save checkpoint file
@@ -173,7 +173,6 @@ for iter in range(max_iter):
 		embedding.tensor_name = test_images.name
 		embedding.metadata_path = os.path.join('./MNIST_logs/embedding', 'metadata.tsv') # Link this tensor to its metadata file
 		projector.visualize_embeddings(embedding_writer, config) # Saves a configuration file that TensorBoard will read during startup
-	
 
 train_writer.close()
 test_writer.close()
