@@ -49,8 +49,7 @@ For simplicity, use the IRIS dataset and a simple 3-layer feed forward network.
 ## exp6_Customer_InputFun.py
 It is often the case that we need to pre-processing the dataset. Customizing our own input_function is a good choice.     
 In this demo, I define a simple input_function. We then provide the function handle when run the graph.     
-For more detail, see   
-https://www.tensorflow.org/get_started/input_fn
+For more detail, see [Tensorflow Document](https://www.tensorflow.org/get_started/input_fn).
 
 ## exp7~exp9
 These three demos are all about Tensorboard. All of them are a modification of exp4. (The model is exactly the same, I just add some extra codes for visualizing on Tensorboard.)
@@ -59,8 +58,8 @@ First, you can try Tensorboard and see how amazing it is.
 1. Just run exp9, you will see a folder named 'MNIST_logs' in your current path.    
 2. Open command line. Run command 'tensorboard --logdir=logpath', where 'logpath' is the path of 'MNIST_logs'.    
 3. You will see the following content (the specific port number may not be the same):    
-Starting TensorBoard 39 on port 6006    
-(You can navigate to http://127.0.1.1:6006)    
+>Starting TensorBoard 39 on port 6006  
+
 4. Open your browser, go to the address http://127.0.1.1:6006 (the address you get from command line)
 
 Now you may want to see the details of the demo. Here is the overview:    
