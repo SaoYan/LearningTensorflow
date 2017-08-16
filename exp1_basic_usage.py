@@ -6,6 +6,7 @@ print("getting started with tensorflow\n")
 # import tensorflow
 print("import...\n")
 import tensorflow as tf
+sess = tf.Session()
 
 # build your first computational graph
 # with constant nodes
@@ -20,7 +21,6 @@ print(node3)
 # this is just BUILDING the graph
 # to actually evaluate the graph, you have to run with a SESSION
 print("\nrun the graph...\n")
-sess = tf.Session()
 print(sess.run([node1, node2, node3]))
 
 # you may want a more flexible graph
@@ -49,14 +49,19 @@ print(sess.run(add_and_triple, {a:1.0, b: 3.5}))
 # having parameters makes a model trainable
 print("\nbuild a trainable model...\n")
 W = tf.Variable(.3, tf.float32)
+# we can also get W by:
+# C = tf.constant(.3, tf.float32)
+# W = tf.Variable(C)
 b = tf.Variable(-.3, tf.float32)
 x = tf.placeholder(tf.float32)
 linear_model = W * x + b
 
-# you have to explicitly initialize the VARIABLEs
+# you have to explicitly initialize the Variables
 print("\ninitialize model parameters...\n")
 init = tf.global_variables_initializer()
-sess.run(init) # note that the VARIABLEs are uninitialized until we call sess.run
+sess.run(init) # note that the Variables are uninitialized until we call sess.run
+# not that we've initialized the Variables, we can compute
+print sess.run([W, b])
 
 # since x is a placeholder, we can feed it and evaluate the model
 print("\nrun the model...\n")
@@ -65,27 +70,7 @@ print(sess.run(linear_model, {x: [1,2,3,4]})) # we can evaluate model for severa
 
 # you can change the value of variables
 print("\nassign new values to variables...\n")
-W_ = tf.assign(W, 1.0)
-b_ = tf.assign(b, -1.0)
-sess.run([W_, b_]) # do remember to run !
-print(sess.run(linear_model, {x: [1,2,3,4]}))
-
-# now you want to know how good your model is
-# you need a y placeholder to provide desired labels
-# you also need a loss function
-print("\nassess how good the model is...\n")
-y = tf.placeholder(tf.float32)
-squared_deltas = tf.square(linear_model - y) # square error
-loss = tf.reduce_sum(squared_deltas) # sum over whole data set
-print(sess.run(loss, {x:[1,2,3,4], y:[0,-1,-2,-3]}))
-
-# now you can train your model ~~
-print("\ndo gradient descent...\n")
-optimizer = tf.train.GradientDescentOptimizer(0.01) # learning rate: 0.01
-train = optimizer.minimize(loss)
-sess.run(init) # reset values to initialization
-for i in range(1000):
-	sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
-	#print("iter step %d training loss %f"%(i, sess.run(loss, {x:x_train, y:y_train})))
-print(sess.run([W,b]))
-print(sess.run(loss, {x:[1,2,3,4], y:[0,-1,-2,-3]}))
+W = tf.assign(W, 1.0)
+b = tf.assign(b, -1.0)
+sess.run([W, b]) # remember to run !
+print(sess.run(linear_model, {x: [1,2,3,4]})) # the result is computed with new values
