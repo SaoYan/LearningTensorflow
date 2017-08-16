@@ -13,7 +13,9 @@ print("\nbuild computational graph with constant nodes...\n")
 node1 = tf.constant(3.0, tf.float32)
 node2 = tf.constant(4.0) # also tf.float32 impicitly
 node3 = tf.add(node1, node2)
-print([node1, node2, node3])
+print(node1)
+print(node2)
+print(node3)
 
 # this is just BUILDING the graph
 # to actually evaluate the graph, you have to run with a SESSION
