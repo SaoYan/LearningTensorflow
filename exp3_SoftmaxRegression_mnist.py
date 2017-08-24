@@ -1,8 +1,6 @@
 #! /usr/bin/python
- 
-print("classify the MNIST dataset using softmax regression ~~")
-
 import tensorflow as tf
+print("classify the MNIST dataset using softmax regression")
 
 # load the dataset
 from tensorflow.examples.tutorials.mnist import input_data
@@ -16,18 +14,14 @@ momentum = 0.9
 batch_size = 100
 max_iter = 1000
 
-# creat model
+# model inputs & outputs
 x = tf.placeholder(tf.float32, [None, 784]) # "None" means that a dimension can be of any length
-#y = tf.nn.softmax(tf.matmul(x,W) + b)
-y = tf.matmul(x, W) + b
-
-# correct outputs
 y_ = tf.placeholder(tf.float32, [None, 10])
 
-# cost
-# cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices = [1]))
-# we don't use this formulation above, because it is numerically unstable
-# implement like this:
+# creat model
+y = tf.matmul(x, W) + b
+
+# loss function
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
 
 # optimizer
@@ -35,24 +29,22 @@ cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_
 optimizer = tf.train.MomentumOptimizer(learning_rate, momentum)
 train_step = optimizer.minimize(cross_entropy)
 
-sess = tf.InteractiveSession()
-tf.global_variables_initializer().run()
-
-# accuracy testing
+# accuracy test
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1)) # this gives us a list of booleans
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32)) # booleans->float32
 
 # training
-for iter in range(1000):
-	batch_x, batch_y = mnist.train.next_batch(batch_size)
-	if iter%10 == 0:
-		train_loss = sess.run(cross_entropy,{x:batch_x,y_:batch_y})
-		train_accuracy = sess.run(accuracy, {x:batch_x,y_:batch_y})
-		test_accuracy = sess.run(accuracy, {x: mnist.test.images, y_: mnist.test.labels})
-		print("iter step %d batch loss %f batch accuracy %f test accuracy %f"%
-			(iter,train_loss,train_accuracy,test_accuracy))
-	sess.run(train_step, {x:batch_x, y_:batch_y})
-
-test_x = mnist.test.images
-test_y = mnist.test.labels
-print("\nfinal test accuracy: %f\n"%sess.run(accuracy, {x: test_x, y_: test_y}))
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+    for iter in range(1000):
+        batch_x, batch_y = mnist.train.next_batch(batch_size)
+        test_x = mnist.test.images
+        test_y = mnist.test.labels
+        sess.run(train_step, {x:batch_x, y_:batch_y})
+        if iter%10 == 0:
+            train_loss = sess.run(cross_entropy,{x:batch_x,y_:batch_y})
+            train_accuracy = sess.run(accuracy, {x:batch_x,y_:batch_y})
+            test_accuracy = sess.run(accuracy, {x: test_x, y_: test_y})
+            print("iter step %d, training batch loss %f, training batch accuracy %f, test accuracy %f" %
+                (iter,train_loss,train_accuracy,test_accuracy))
