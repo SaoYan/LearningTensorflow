@@ -3,7 +3,6 @@
 print("classify the MNIST dataset using CNN ~~")
 
 import tensorflow as tf
-sess = tf.InteractiveSession()
 
 # define some functions
 def weight(shape):
@@ -70,19 +69,20 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 max_iter = 20000
 batch_size = 100
 keep_prob = 0.5
-sess.run(tf.global_variables_initializer())
-for iter in range(max_iter):
-	batch_x, batch_y = mnist.train.next_batch(batch_size)
-	if iter%100 == 0:
-		train_accuracy = accuracy.eval({x:batch_x, y_:batch_y, p_keep: 1.0}) #  turn off dropout during testing
-		test_accuracy = 0.0
-		for i in range(100):
-			test_x, test_y = mnist.test.next_batch(100)
-			test_acc = accuracy.eval({x:test_x, y_:test_y, p_keep:1.0})
-			test_accuracy = test_accuracy + test_acc
-		test_accuracy = test_accuracy/100.0
-		print("iter step %d batch accuracy %f test accuracy %f"%(iter, train_accuracy, test_accuracy))
-	train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for iter in range(max_iter):
+        batch_x, batch_y = mnist.train.next_batch(batch_size)
+        if iter%100 == 0:
+            train_accuracy = accuracy.eval({x:batch_x, y_:batch_y, p_keep: 1.0}) #  turn off dropout during testing
+            test_accuracy = 0.0
+            for i in range(100):
+                test_x, test_y = mnist.test.next_batch(100)
+                test_acc = accuracy.eval({x:test_x, y_:test_y, p_keep:1.0})
+                test_accuracy = test_accuracy + test_acc
+            test_accuracy = test_accuracy/100.0
+            print("iter step %d batch accuracy %f test accuracy %f"%(iter, train_accuracy, test_accuracy))
+        train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
 
 test_accuracy = 0.0
 for i in range(100):
