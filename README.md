@@ -1,5 +1,4 @@
 # LearningTensorflow        
-**This is how I get started with Tensorflow!**
 
 ## exp1_basic_usage.py:     
 Just trying basic useage of tensorflow.     
