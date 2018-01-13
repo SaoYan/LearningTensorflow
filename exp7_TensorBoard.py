@@ -75,7 +75,9 @@ with tf.name_scope('output_layer'):
 
 # cost
 with tf.name_scope('cost'):
-    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels = y_, logits = y))
+    cross_entropy = tf.reduce_mean(
+        tf.nn.softmax_cross_entropy_with_logits(labels = y_, logits = y)
+    )
     # summary
     tf.summary.scalar('test_loss', cross_entropy)
 
