@@ -95,12 +95,3 @@ with tf.Session() as sess:
             # print the result
             print("iter step %d batch accuracy %f test accuracy %f" %
                      (iter, train_accuracy, test_accuracy))
-
-# when finishing the training, run test again
-test_accuracy = 0.0
-for i in range(100):
-    test_x, test_y = mnist.test.next_batch(100)
-    test_acc = accuracy.eval({x:test_x, y_:test_y, p_keep:1.0})
-    test_accuracy = test_accuracy + test_acc
-test_accuracy = test_accuracy/100.0
-print ("final test accuracy %f"%test_accuracy)
