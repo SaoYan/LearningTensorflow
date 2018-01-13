@@ -116,7 +116,8 @@ with tf.Session() as sess:
                 test_acc = accuracy.eval({x:test_x, y_:test_y, p_keep:1.0})
                 test_accuracy = test_accuracy + test_acc
             test_accuracy = test_accuracy/100.0
-            print("iter step %d batch accuracy %f test accuracy %f"%(iter, train_accuracy, test_accuracy))
+            print("iter step %d batch accuracy %f test accuracy %f" %
+                (iter, train_accuracy, test_accuracy))
             # write summary file
             summary_train = sess.run(summary, {x:batch_x, y_:batch_y, p_keep: 1.0})
             summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
