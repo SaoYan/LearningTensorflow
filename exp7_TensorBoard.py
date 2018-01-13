@@ -108,7 +108,8 @@ with tf.Session() as sess:
         batch_x, batch_y = mnist.train.next_batch(batch_size)
         if iter%100 == 0:
             # report accuracy
-            train_accuracy = accuracy.eval({x:batch_x, y_:batch_y, p_keep: 1.0}) #  turn off dropout during testing
+            # turn off dropout during testing
+            train_accuracy = accuracy.eval({x:batch_x, y_:batch_y, p_keep: 1.0})
             test_accuracy = 0.0
             for i in range(100):
                 test_x, test_y = mnist.test.next_batch(100)
