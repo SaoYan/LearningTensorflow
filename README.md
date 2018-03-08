@@ -1,5 +1,11 @@
 # LearningTensorflow        
 
+***
+New Updates:
+March 8, 2018: adding new demo for reading data via queue-based input pipeline; [source code](https://github.com/SaoYan/LearningTensorflow/blob/master/exp11_user_dataset_low_API.py)
+
+***
+
 ## exp1_basic_usage.py:     
 Just trying basic useage of tensorflow.     
 This demo helps to understand basic concepts including graph, Session, placeholder, constant and Variable.
