@@ -59,8 +59,6 @@ if __name__ == "__main__":
     # load the dataset and display them with tensorboard
     ###########################################
     print("loading data ...\n")
-    # placeholder
-    img_batch = tf.placeholder(tf.uint8, [None, 180, 180, 1])
     # define batch
     batch_size = 64
     Image = read_tfrecord(dataset_name, size=[180,180,1])
@@ -74,6 +72,8 @@ if __name__ == "__main__":
                 capacity = 1000 + 3 * batch_size,
                 num_threads = 2,
                 min_after_dequeue = 1000)
+    # placeholder
+    img_batch = tf.placeholder(tf.uint8, [None, 180, 180, 1])
     # summary
     # we only display 6 images within each batch
     tf.summary.image(name='display', tensor=img_batch, max_outputs=6)
