@@ -44,7 +44,7 @@ if __name__ == "__main__":
     writer = tf.python_io.TFRecordWriter(dataset_name)
     # save my images to dataset
     for f in files:
-        img = cv2.imread(f)[:,:,0] # gray image; so extract one channel is enough
+        img = cv2.imread(f, cv2.IMREAD_GRAYSCALE) # gray scale image
         image_raw = img.tostring() # save as 8bit data
         feature = {
             'image_raw': _bytes_feature(image_raw),
