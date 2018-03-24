@@ -23,12 +23,13 @@ def _float_feature(value):
 # end change
 ##############################################################################
 
+##############################################################################
+# this part is changed
 def read_tfrecord(tf_filename, size):
     queue = tf.train.string_input_producer([tf_filename])
     reader = tf.TFRecordReader()
     __, serialized_example = reader.read(queue)
-    ##############################################################################
-    # this part is changed
+
     feature = {
           'image_raw': tf.FixedLenFeature([size[0]*size[1]*size[2]], tf.float32),
           'height': tf.FixedLenFeature([], tf.int64),
@@ -36,10 +37,10 @@ def read_tfrecord(tf_filename, size):
     }
     features = tf.parse_single_example(serialized_example, features=feature)
     image = features['image_raw']
-    # end change
-    ##############################################################################
     image = tf.reshape(image, size)
     return image
+# end change
+##############################################################################
 
 if __name__ == "__main__":
     data_path = 'my_data'
@@ -55,10 +56,10 @@ if __name__ == "__main__":
     h5f = h5py.File('my_data.h5', 'r')
     keys = list(h5f.keys())
     # save my images to dataset
+    ##############################################################################
+    # this part is changed
     for key in keys:
         img = np.array(h5f[key]).astype(dtype=np.float32)
-        ##############################################################################
-        # this part is changed
         height = img.shape[0]
         width = img.shape[1]
         feature = {
@@ -66,12 +67,12 @@ if __name__ == "__main__":
             'height': _int64_feature(height),
             'width':  _int64_feature(width)
         }
-        # end change
-        ##############################################################################
         example = tf.train.Example(features=tf.train.Features(feature=feature))
         writer.write(example.SerializeToString())
     h5f.close()
     writer.close()
+    # end change
+    ##############################################################################
 
     ## load the dataset and display them with tensorboard
     print("loading data ...\n")
