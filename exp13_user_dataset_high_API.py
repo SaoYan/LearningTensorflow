@@ -3,7 +3,7 @@
 '''
 import user's own dataset using low level API when the original data is float
 
-this demo is modified based on exp11
+this demo is modified based on exp13
 '''
 
 import tensorflow as tf
@@ -29,6 +29,7 @@ def read_tfrecord(tf_filename, size):
     queue = tf.train.string_input_producer([tf_filename])
     reader = tf.TFRecordReader()
     __, serialized_example = reader.read(queue)
+
     feature = {
           'image_raw': tf.FixedLenFeature([size[0]*size[1]*size[2]], tf.float32),
           'height': tf.FixedLenFeature([], tf.int64),
