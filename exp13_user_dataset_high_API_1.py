@@ -16,27 +16,37 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+def __read__(file, label):
+    image = cv2.imread(file.decode(), cv2.IMREAD_GRAYSCALE)
+    image = np.expand_dims(image, 2)
+    image = np.float32(image) / 255.
+    return image, label
+
 if __name__ == "__main__":
     ## load all the images into memory
     print('loading data into memory ...\n')
     data_path = 'my_data'
     files = glob.glob(os.path.join(data_path, '*.png'))
     files.sort()
-    Img = cv2.imread(files[0], cv2.IMREAD_GRAYSCALE)
-    Img = np.expand_dims(Img, 2) # 180 x 180 x 1
-    Img = np.expand_dims(Img, 0) # 1 x 180 x 180 x 1
-    Label = np.random.randint(0,2, size=(1,1))
-    for i in range(1, len(files)):
-        img = cv2.imread(files[i], cv2.IMREAD_GRAYSCALE)
-        img = np.expand_dims(img, 2) # 180 x 180 x 1
-        img = np.expand_dims(img, 0) # 1 x 180 x 180 x 1
-        label = np.random.randint(0,2, size=(1,1))
-        Img = np.concatenate((Img,img), 0)
-        Label = np.concatenate((Label,label), 0)
+    labels = np.random.randint(0,2, size=(len(files),1))
 
-    ## construct dataset & iterator
+    ## construct dataset
     print('constructing Dataset & Iterator ...\n')
-    dataset = tf.data.Dataset.from_tensor_slices((Img, Label))
+    # 1. build Dataset object
+    dataset = tf.data.Dataset.from_tensor_slices((files, labels))
+    # 2. preprocess with Dataset.map()
+    dataset = dataset.map(
+        lambda file, label: tuple(
+            tf.py_func(__read__, [file, label], [tf.float32, label.dtype])
+        )
+    )
+    # 3. multiple epochs & batching
+    dataset = dataset.repeat(10) # 10 epoches
+    dataset = dataset.batch(64) # batch size: 64
+    # 4. shuffle the dataset
+    dataset = dataset.shuffle(buffer_size=10000)
+
+    ## construct iterator
     iterator = dataset.make_one_shot_iterator()
     next_element = iterator.get_next()
 
@@ -50,11 +60,13 @@ if __name__ == "__main__":
         summ_writer = tf.summary.FileWriter('logs', sess.graph)
         while True:
             try:
-                batch = sess.rum(next_element)
+                batch_img, batch_label = sess.run(next_element)
+                # print(batch_img.shape)
+                # print(batch_label.shape)
             except tf.errors.OutOfRangeError:
                 print('End of dataset\n')
                 break
-            summ = sess.run(summary, {img_batch: batch})
+            summ = sess.run(summary, {img_batch: batch_img})
             summ_writer.add_summary(summ, step)
             summ_writer.flush()
             step += 1

@@ -9,6 +9,12 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+# what is embedding?
+# https://www.tensorflow.org/versions/master/programmers_guide/embedding
+
+# how to visualizing embeddings?
+# https://www.tensorflow.org/versions/r1.2/get_started/embedding_viz
+
 # define some functions
 def weight(shape,name):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -92,7 +98,7 @@ with tf.name_scope('train'):
     train_step = optimizer.minimize(cross_entropy)
 
 # accuracy testing
-with tf.name_scope('accuracy_test'):
+with tf.name_scope('accuracy'):
     correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     # summary
@@ -102,19 +108,29 @@ with tf.name_scope('accuracy_test'):
 max_iter = 20000
 batch_size = 50
 keep_prob = 0.5
+if not os.path.exists('MNIST_logs/train'):
+    os.mkdir('MNIST_logs')
+    os.mkdir('MNIST_logs/train')
+if not os.path.exists('MNIST_logs/test'):
+    os.mkdir('MNIST_logs/test')
 with tf.Session() as sess:
-    # writers
-    summary = tf.summary.merge_all()
-    train_writer = tf.summary.FileWriter('./MNIST_logs/train', sess.graph)
-    test_writer  = tf.summary.FileWriter('./MNIST_logs/test' , sess.graph)
-    embedding_writer  = tf.summary.FileWriter('./MNIST_logs/embedding' , sess.graph)
-    saver = tf.train.Saver() # Create a saver for writing training checkpoints.
-    # create metadata for visualizing
+    # embeddings
     test_images = tf.Variable(mnist.test.images, name='test_images')
     test_labels = tf.argmax(mnist.test.labels,1).eval(session=sess)
-    with open('./MNIST_logs/embedding/metadata.tsv', 'w') as metadata_file:
+    with open('MNIST_logs/test/metadata.tsv', 'w') as metadata_file:
         for label in test_labels:
             metadata_file.write('%d\n' % label)
+    # associate metadata with the embedding.
+    config = projector.ProjectorConfig()
+    embedding = config.embeddings.add() # You can add multiple embeddings. Here we add only one
+    embedding.tensor_name = test_images.name
+    embedding.metadata_path = 'metadata.tsv' # Link this tensor to its metadata file
+    # writers
+    summary = tf.summary.merge_all()
+    train_writer = tf.summary.FileWriter('MNIST_logs/train', sess.graph)
+    test_writer  = tf.summary.FileWriter('MNIST_logs/test' , sess.graph)
+    saver = tf.train.Saver() # Create a saver for writing training checkpoints.
+    projector.visualize_embeddings(test_writer, config) # Saves a configuration file that TensorBoard will read during startup
     # training
     sess.run(tf.global_variables_initializer())
     for iter in range(max_iter):
@@ -138,14 +154,8 @@ with tf.Session() as sess:
             test_writer.flush()
         if iter%1000 == 0:
             # save checkpoint file
-            checkpoint_file = os.path.join('./MNIST_logs', 'model.ckpt')
+            checkpoint_file = os.path.join('MNIST_logs', 'model.ckpt')
             saver.save(sess, checkpoint_file, global_step=iter)
-            # associate metadata with the embedding.
-            config = projector.ProjectorConfig()
-            embedding = config.embeddings.add() # You can add multiple embeddings. Here we add only one
-            embedding.tensor_name = test_images.name
-            embedding.metadata_path = os.path.join('./MNIST_logs/embedding', 'metadata.tsv') # Link this tensor to its metadata file
-            projector.visualize_embeddings(embedding_writer, config) # Saves a configuration file that TensorBoard will read during startup
         # train on setp
         train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
     train_writer.close()
