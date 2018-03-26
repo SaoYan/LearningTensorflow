@@ -11,6 +11,9 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+# reference:
+# https://www.tensorflow.org/programmers_guide/summaries_and_tensorboard
+
 # define some functions
 def weight(shape, name):
     initial = tf.truncated_normal(shape, stddev=0.1)

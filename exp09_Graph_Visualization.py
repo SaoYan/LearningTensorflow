@@ -9,6 +9,9 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+# reference:
+# https://www.tensorflow.org/programmers_guide/graph_viz
+
 # define some functions
 def weight(shape,name):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -152,11 +155,12 @@ with tf.Session() as sess:
             test_writer.flush()
         if iter%1000 == 0:
             # save checkpoint file
-            checkpoint_file = os.path.join('./MNIST_logs/embedding', 'model.ckpt')
+            checkpoint_file = os.path.join('MNIST_logs', 'model.ckpt')
             saver.save(sess, checkpoint_file, global_step=iter)
         ######################################################################################
         # each 1000 steps: save running status
         if iter%1000 == 0:
+            print('\nsaving running status information ...\n')
             run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
             run_metadata = tf.RunMetadata()
             sess.run(train_step, {x:batch_x, y_:batch_y, p_keep: keep_prob},
