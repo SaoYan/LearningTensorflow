@@ -1,6 +1,11 @@
 #! /usr/bin/python
 import tensorflow as tf
 import numpy as np
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 print("train a simple linear model by yourself !")
 
 # model parameters

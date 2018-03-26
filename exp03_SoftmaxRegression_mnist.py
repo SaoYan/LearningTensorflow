@@ -1,9 +1,14 @@
 #! /usr/bin/python
 import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 print("classify the MNIST dataset using softmax regression")
 
 # load the dataset
-from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./MNIST_data", one_hot = True) # labels are "one-hot vectors"
 
 # model parameters

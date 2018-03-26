@@ -1,5 +1,9 @@
 #! /usr/bin/python
 
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 # This is an example code for getting started with tensorflow
 print("getting started with tensorflow\n")
 

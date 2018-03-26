@@ -11,6 +11,10 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # change the default logging level
 # for details about logging level, see

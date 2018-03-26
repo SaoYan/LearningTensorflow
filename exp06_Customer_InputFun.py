@@ -21,9 +21,12 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
-
 import pandas as pd
 import tensorflow as tf
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # set logging verbosity to INFO for more detailed log output
 # see https://www.tensorflow.org/get_started/monitors#enabling_logging_with_tensorflow
