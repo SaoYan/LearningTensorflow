@@ -2,7 +2,8 @@
 
 ***
 New Updates:
-March 8, 2018: adding new demo for reading data via queue-based input pipeline; [source code](https://github.com/SaoYan/LearningTensorflow/blob/master/exp11_user_dataset_low_API.py)
+* March 8, 2018: adding new demo for reading data via queue-based input pipeline; [source code](https://github.com/SaoYan/LearningTensorflow/blob/master/exp11_user_dataset_low_API_1.py)
+* March 27, 2018: adding new demo for reading data using high level API tf.data; [source code](https://github.com/SaoYan/LearningTensorflow/blob/master/exp13_user_dataset_high_API_1.py)
 
 ***
 
