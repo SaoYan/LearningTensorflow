@@ -13,7 +13,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 def weight(shape,name):
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial,name=name)
-    #return tf.Variable(tf.truncated_normal(shape, stddev = .1)) # ValueError: None values not supported
 
 def bias(shape,name):
     initial = tf.constant(0.1, shape=shape)
@@ -27,7 +26,7 @@ def max_pool_2x2(x):
 
 # load the dataset
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("./MNIST_data", one_hot = True)
+mnist = input_data.read_data_sets("MNIST_data", one_hot = True)
 
 # build CNN model
 # initialize weights with small random values for symmetry breaking
@@ -93,7 +92,7 @@ with tf.name_scope('train'):
     train_step = optimizer.minimize(cross_entropy)
 
 # accuracy testing
-with tf.name_scope('accuracy_test'):
+with tf.name_scope('accuracy'):
     correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     # summary
@@ -103,19 +102,31 @@ with tf.name_scope('accuracy_test'):
 max_iter = 20000
 batch_size = 50
 keep_prob = 0.5
+if not os.path.exists('MNIST_logs/train'):
+    os.mkdir('MNIST_logs')
+    os.mkdir('MNIST_logs/train')
+if not os.path.exists('MNIST_logs/test'):
+    os.mkdir('MNIST_logs/test')
 with tf.Session() as sess:
-    # writers
-    summary = tf.summary.merge_all()
-    train_writer = tf.summary.FileWriter('./MNIST_logs/train', sess.graph)
-    test_writer  = tf.summary.FileWriter('./MNIST_logs/test' , sess.graph)
-    embedding_writer  = tf.summary.FileWriter('./MNIST_logs/embedding' , sess.graph)
-    saver = tf.train.Saver() # Create a saver for writing training checkpoints.
-    # create metadata for visualizing
+    ######################################################################################
+    # embeddings
     test_images = tf.Variable(mnist.test.images, name='test_images')
     test_labels = tf.argmax(mnist.test.labels,1).eval(session=sess)
-    with open('./MNIST_logs/embedding/metadata.tsv', 'w') as metadata_file:
+    with open('MNIST_logs/test/metadata.tsv', 'w') as metadata_file:
         for label in test_labels:
             metadata_file.write('%d\n' % label)
+    # associate metadata with the embedding.
+    config = projector.ProjectorConfig()
+    embedding = config.embeddings.add()
+    embedding.tensor_name = test_images.name
+    embedding.metadata_path = 'metadata.tsv' # Link this tensor to its metadata file
+    # writers
+    summary = tf.summary.merge_all()
+    train_writer = tf.summary.FileWriter('MNIST_logs/train', sess.graph)
+    test_writer  = tf.summary.FileWriter('MNIST_logs/test' , sess.graph)
+    saver = tf.train.Saver() # Create a saver for writing training checkpoints.
+    projector.visualize_embeddings(test_writer, config)
+    ######################################################################################
     # training
     sess.run(tf.global_variables_initializer())
     for iter in range(max_iter):
@@ -131,45 +142,29 @@ with tf.Session() as sess:
                 test_accuracy = test_accuracy + test_acc
             test_accuracy = test_accuracy/100.0
             print("iter step %d batch accuracy %f test accuracy %f"%(iter, train_accuracy, test_accuracy))
-            # write summary file
-            if iter % 1000 == 0:  # Record execution stats
-                # train summary
-                run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
-                run_metadata = tf.RunMetadata()
-                summary_train, _ = sess.run([summary, train_step],
-                                        feed_dict= {x:batch_x, y_:batch_y, p_keep: 1.0},
-                                        options=run_options, run_metadata=run_metadata)
-                train_writer.add_run_metadata(run_metadata, 'step%03d' % iter)
-                train_writer.add_summary(summary_train, iter)
-                print('Adding run metadata for %d' % iter)
-                train_writer.flush()
-                # test summary
-                summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
-                test_writer.add_summary(summary_test, iter)
-                test_writer.flush()
-            else:   # Record summary only
-                # train summary
-                summary_train, _ = sess.run([summary,train_step],
-                                        feed_dict = {x:batch_x, y_:batch_y, p_keep: 1.0})
-                train_writer.add_summary(summary_train, iter)
-                train_writer.flush()
-                # test summary
-                summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
-                test_writer.add_summary(summary_test, iter)
-                test_writer.flush()
-        else:
-            train_step.run({x:batch_x, y_:batch_y, p_keep: keep_prob})
-        # each 1000 steps: operations for embeddings
+            # train summary
+            summary_train = sess.run(summary, {x:batch_x, y_:batch_y, p_keep: 1.0})
+            train_writer.add_summary(summary_train, iter)
+            train_writer.flush()
+            # test summary
+            summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
+            test_writer.add_summary(summary_test, iter)
+            test_writer.flush()
         if iter%1000 == 0:
             # save checkpoint file
             checkpoint_file = os.path.join('./MNIST_logs/embedding', 'model.ckpt')
             saver.save(sess, checkpoint_file, global_step=iter)
-            # associate metadata with the embedding.
-            config = projector.ProjectorConfig()
-            embedding = config.embeddings.add() # You can add multiple embeddings. Here we add only one
-            embedding.tensor_name = test_images.name
-            embedding.metadata_path = os.path.join('./MNIST_logs/embedding', 'metadata.tsv') # Link this tensor to its metadata file
-            projector.visualize_embeddings(embedding_writer, config) # Saves a configuration file that TensorBoard will read during startup
+        ######################################################################################
+        # each 1000 steps: save running status
+        if iter%1000 == 0:
+            run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            run_metadata = tf.RunMetadata()
+            sess.run(train_step, {x:batch_x, y_:batch_y, p_keep: keep_prob},
+                options=run_options, run_metadata=run_metadata)
+            train_writer.add_run_metadata(run_metadata, 'step%03d' % iter)
+        else:
+            sess.run(train_step, {x:batch_x, y_:batch_y, p_keep: keep_prob})
+        ######################################################################################
     train_writer.close()
     test_writer.close()
     embedding_writer.close()

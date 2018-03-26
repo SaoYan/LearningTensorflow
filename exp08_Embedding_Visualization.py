@@ -32,7 +32,7 @@ def max_pool_2x2(x):
 
 # load the dataset
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("./MNIST_data", one_hot = True)
+mnist = input_data.read_data_sets("MNIST_data", one_hot = True)
 
 # build CNN model
 # initialize weights with small random values for symmetry breaking
@@ -114,6 +114,7 @@ if not os.path.exists('MNIST_logs/train'):
 if not os.path.exists('MNIST_logs/test'):
     os.mkdir('MNIST_logs/test')
 with tf.Session() as sess:
+    ######################################################################################
     # embeddings
     test_images = tf.Variable(mnist.test.images, name='test_images')
     test_labels = tf.argmax(mnist.test.labels,1).eval(session=sess)
@@ -122,7 +123,7 @@ with tf.Session() as sess:
             metadata_file.write('%d\n' % label)
     # associate metadata with the embedding.
     config = projector.ProjectorConfig()
-    embedding = config.embeddings.add() # You can add multiple embeddings. Here we add only one
+    embedding = config.embeddings.add()
     embedding.tensor_name = test_images.name
     embedding.metadata_path = 'metadata.tsv' # Link this tensor to its metadata file
     # writers
@@ -130,7 +131,8 @@ with tf.Session() as sess:
     train_writer = tf.summary.FileWriter('MNIST_logs/train', sess.graph)
     test_writer  = tf.summary.FileWriter('MNIST_logs/test' , sess.graph)
     saver = tf.train.Saver() # Create a saver for writing training checkpoints.
-    projector.visualize_embeddings(test_writer, config) # Saves a configuration file that TensorBoard will read during startup
+    projector.visualize_embeddings(test_writer, config)
+    ######################################################################################
     # training
     sess.run(tf.global_variables_initializer())
     for iter in range(max_iter):

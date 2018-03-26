@@ -29,7 +29,7 @@ def max_pool_2x2(x):
 
 # load the dataset
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("./MNIST_data", one_hot = True)
+mnist = input_data.read_data_sets("MNIST_data", one_hot = True)
 
 # build CNN model
 # initialize weights with small random values for symmetry breaking
@@ -91,11 +91,11 @@ with tf.name_scope('train'):
     train_step = optimizer.minimize(cross_entropy)
 
 # accuracy testing
-with tf.name_scope('accuracy_test'):
+with tf.name_scope('accuracy'):
     correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     # summary
-    tf.summary.scalar('test_accuracy', accuracy)
+    tf.summary.scalar('accuracy', accuracy)
 
 # training
 max_iter = 20000
@@ -104,8 +104,8 @@ keep_prob = 0.5
 with tf.Session() as sess:
     # summary writer
     summary = tf.summary.merge_all()
-    train_writer = tf.summary.FileWriter('./MNIST_logs/train', sess.graph)
-    test_writer  = tf.summary.FileWriter('./MNIST_logs/test' , sess.graph)
+    train_writer = tf.summary.FileWriter('MNIST_logs/train', sess.graph)
+    test_writer  = tf.summary.FileWriter('MNIST_logs/test' , sess.graph)
     # initialization
     sess.run(tf.global_variables_initializer())
     for iter in range(max_iter):
@@ -126,7 +126,7 @@ with tf.Session() as sess:
             summary_train = sess.run(summary, {x:batch_x, y_:batch_y, p_keep: 1.0})
             summary_test  = sess.run(summary, {x:test_x, y_:test_y, p_keep: 1.0})
             train_writer.add_summary(summary_train, iter)
-            test_writer.add_summary(summary_test  , iter)
+            test_writer.add_summary(summary_test, iter)
             train_writer.flush()
             test_writer.flush()
         # train on step
