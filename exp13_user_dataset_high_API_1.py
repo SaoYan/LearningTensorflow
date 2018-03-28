@@ -20,25 +20,23 @@ def __read__(file, label):
     image = cv2.imread(file.decode(), cv2.IMREAD_GRAYSCALE)
     image = np.expand_dims(image, 2)
     image = np.float32(image) / 255.
-    return image, label
+    return (image, label)
 
 if __name__ == "__main__":
-    ## load all the images into memory
-    print('loading data into memory ...\n')
+    ## load into memory
+    print('\nloading data into memory ...\n')
     data_path = 'my_data'
     files = glob.glob(os.path.join(data_path, '*.png'))
     files.sort()
     labels = np.random.randint(0,2, size=(len(files),1))
 
     ## construct dataset
-    print('constructing Dataset & Iterator ...\n')
+    print('\nconstructing Dataset & Iterator ...\n')
     # 1. build Dataset object
     dataset = tf.data.Dataset.from_tensor_slices((files, labels))
     # 2. preprocess with Dataset.map()
     dataset = dataset.map(
-        lambda file, label: tuple(
-            tf.py_func(__read__, [file, label], [tf.float32, label.dtype])
-        )
+        lambda x, y: tf.py_func(__read__, [x, y], [tf.float32, y.dtype])
     )
     # 3. multiple epochs & batching
     dataset = dataset.repeat(10) # 10 epoches
@@ -51,9 +49,9 @@ if __name__ == "__main__":
     next_element = iterator.get_next()
 
     ## read data
-    print('reading dataset ...\n')
+    print('\nreading dataset ...\n')
     img_batch = tf.placeholder(tf.float32, [None, 180, 180, 1])
-    tf.summary.image(name='display', tensor=img_batch, max_outputs=4)
+    tf.summary.image(name='display', tensor=img_batch, max_outputs=6)
     step = 0
     with tf.Session() as sess:
         summary = tf.summary.merge_all()
@@ -63,8 +61,9 @@ if __name__ == "__main__":
                 batch_img, batch_label = sess.run(next_element)
                 # print(batch_img.shape)
                 # print(batch_label.shape)
+                # print(type(batch_label[0,0]))
             except tf.errors.OutOfRangeError:
-                print('End of dataset\n')
+                print('\nEnd of dataset\n')
                 break
             summ = sess.run(summary, {img_batch: batch_img})
             summ_writer.add_summary(summ, step)
