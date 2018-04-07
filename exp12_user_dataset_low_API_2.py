@@ -45,13 +45,10 @@ def read_tfrecord(tf_filename, size):
 ##############################################################################
 
 if __name__ == "__main__":
-    data_path = 'my_data'
     dataset_name = 'dataset.tfrecords'
 
     ## save my own images to dataset (100 images of size 180 x 180)
     print("saving data ...\n")
-    files = glob.glob(os.path.join(data_path, '*.png'))
-    files.sort()
     # build tfrecord file
     writer = tf.python_io.TFRecordWriter(dataset_name)
     # reader for original data
