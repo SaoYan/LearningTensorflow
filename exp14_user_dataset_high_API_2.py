@@ -25,7 +25,7 @@ def _float_feature(value):
 
 def _parse_function(example_proto):
   feature = {
-        'image_raw': tf.FixedLenFeature(180*180*1, tf.float32),
+        'image_raw': tf.FixedLenFeature([180*180*1], tf.float32),
         'height': tf.FixedLenFeature([], tf.int64),
         'width': tf.FixedLenFeature([], tf.int64)
   }
