@@ -65,7 +65,7 @@ print("\ninitialize model parameters...\n")
 init = tf.global_variables_initializer()
 sess.run(init) # note that the Variables are uninitialized until we call sess.run
 # not that we've initialized the Variables, we can compute
-print sess.run([W, b])
+print(sess.run([W, b]))
 
 # since x is a placeholder, we can feed it and evaluate the model
 print("\nrun the model...\n")
