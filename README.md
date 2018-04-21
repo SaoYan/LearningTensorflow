@@ -7,6 +7,9 @@ New Updates:
 
 ***
 
+Tutorials (in Chinese) on my WeChat Public Account:  
+![public-account.jpg](https://github.com/SaoYan/LearningTensorflow/blob/master/Figures/public-account.jpg)
+
 ## exp1_basic_usage.py:     
 This demo helps to understand basic concepts including graph, Session, placeholder, constant and Variable.
 
