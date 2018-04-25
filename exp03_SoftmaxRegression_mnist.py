@@ -15,7 +15,7 @@ W = tf.Variable(tf.random_uniform([784, 10]))
 b = tf.Variable(tf.random_uniform([10]))
 learning_rate = 0.1
 momentum = 0.9
-batch_size = 100
+batch_size = 64
 max_iter = 1000
 
 # model inputs & outputs
@@ -41,7 +41,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32)) # booleans->f
 init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
-    for iter in range(1000):
+    for iter in range(3000):
         batch_x, batch_y = mnist.train.next_batch(batch_size)
         test_x = mnist.test.images
         test_y = mnist.test.labels
@@ -50,5 +50,5 @@ with tf.Session() as sess:
             train_loss = sess.run(cross_entropy,{x:batch_x,y_:batch_y})
             train_accuracy = sess.run(accuracy, {x:batch_x,y_:batch_y})
             test_accuracy = sess.run(accuracy, {x: test_x, y_: test_y})
-            print("iter step %d, training batch loss %f, training batch accuracy %f, test accuracy %f" %
+            print("iter step %d, loss %f, training accuracy %f, test accuracy %f" %
                 (iter,train_loss,train_accuracy,test_accuracy))

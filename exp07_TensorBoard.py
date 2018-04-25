@@ -100,7 +100,7 @@ with tf.name_scope('accuracy'):
 
 # training
 max_iter = 20000
-batch_size = 100
+batch_size = 64
 keep_prob = 0.5
 with tf.Session() as sess:
     # summary writer

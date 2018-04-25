@@ -104,7 +104,7 @@ with tf.name_scope('accuracy'):
 
 # training
 max_iter = 20000
-batch_size = 50
+batch_size = 64
 keep_prob = 0.5
 if not os.path.exists('MNIST_logs/train'):
     os.mkdir('MNIST_logs')

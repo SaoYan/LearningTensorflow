@@ -71,7 +71,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # training
 max_iter = 20000
-batch_size = 100
+batch_size = 64
 keep_prob = 0.5
 with tf.Session() as sess:
     # initialize all parameters
