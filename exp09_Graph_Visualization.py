@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 import os.path
 import tensorflow as tf
 from tensorflow.contrib.tensorboard.plugins import projector

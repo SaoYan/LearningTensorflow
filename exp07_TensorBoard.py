@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 use TensorBoard
 based on exp4

@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 this code is an example use of tf.contrib.learn to construct a neural network classifier;
 train it on the Iris data set to predict flower species based on sepal/petal geometry

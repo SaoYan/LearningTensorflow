@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 in exp5, no manipulation of source data is required;
 but in cases where more feature engineering is needed,

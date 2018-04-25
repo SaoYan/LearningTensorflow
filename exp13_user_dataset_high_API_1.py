@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 import user's own dataset using high level API ---- From Tensor
 

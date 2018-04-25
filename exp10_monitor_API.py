@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 this code is a modification of Exp5
 reference:

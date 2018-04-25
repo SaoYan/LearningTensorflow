@@ -1,5 +1,3 @@
-#! /usr/bin/python
-
 '''
 import user's own dataset using low level API when the original data is float
 

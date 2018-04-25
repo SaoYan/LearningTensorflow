@@ -1,4 +1,3 @@
-#! /usr/bin/python
 import tensorflow as tf
 import os
 
