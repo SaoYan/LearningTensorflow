@@ -36,11 +36,11 @@ if __name__ == "__main__":
     dataset = dataset.map(
         lambda x, y: tf.py_func(__read__, [x, y], [tf.float32, y.dtype])
     )
-    # 3. multiple epochs & batching
-    dataset = dataset.repeat(10) # 10 epoches
-    dataset = dataset.batch(64) # batch size: 64
-    # 4. shuffle the dataset
+    # 3. shuffle the dataset
     dataset = dataset.shuffle(buffer_size=10000)
+    # 4. multiple epochs & batching
+    dataset = dataset.batch(64) # batch size: 64
+    dataset = dataset.repeat(10) # 10 epoches
 
     ## construct iterator
     iterator = dataset.make_one_shot_iterator()

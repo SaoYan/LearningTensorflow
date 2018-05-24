@@ -63,11 +63,11 @@ if __name__ == "__main__":
     dataset = tf.data.TFRecordDataset(dataset_name)
     # 2. parsing TFrecords
     dataset = dataset.map(_parse_function)
-    # 3. multiple epochs & batching
-    dataset = dataset.repeat(10) # 10 epoches
-    dataset = dataset.batch(64) # batch size: 64
-    # 4. shuffle the dataset
+    # 3. shuffle the dataset
     dataset = dataset.shuffle(buffer_size=10000)
+    # 4. multiple epochs & batching
+    dataset = dataset.batch(64) # batch size: 64
+    dataset = dataset.repeat(10) # 10 epoches
     # construct iterator
     iterator = dataset.make_one_shot_iterator()
     next_element = iterator.get_next()
