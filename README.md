@@ -1,7 +1,7 @@
 # LearningTensorflow  
 
 ## These demos are all based on Tensorflow's low level APIs.
-## Tensorflow has witnessed huge change. For example, Keras has been merged to Tensorflow as high level APIs. In Tensorflow 2.0, dynamic dynamic computational graph replaces static graph as the default pattern. Therefore, the demos in this repo may be kind of out-of-date. Just use them as a reference.
+## Tensorflow has witnessed huge changes. For example, Keras has been merged to Tensorflow as high level APIs. In Tensorflow 2.0, dynamic dynamic computational graph replaces static graph as the default pattern. Therefore, some of the demos in this repo may be out-of-date. Just use them as a reference.  
 
 ***
 New Updates:
